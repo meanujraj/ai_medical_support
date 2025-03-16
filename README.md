@@ -37,12 +37,27 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Run the application:
+4. Download required data files:
+```bash
+# Download the data files from GitHub Releases
+# Visit: https://github.com/meanujraj/ai_medical_support/releases
+# Download the ai_medical_support_data.zip file from the latest release
+```
+
+5. Extract and place the data files:
+```bash
+# Extract the downloaded zip file
+# Place medicine.csv in the root directory
+# Place svc.pkl in the models directory
+# Place the datasets folder contents in your local datasets directory
+```
+
+6. Run the application:
 ```bash
 python main.py
 ```
 
-5. Open your browser and navigate to:
+7. Open your browser and navigate to:
 ```
 http://127.0.0.1:5000/
 ```
@@ -87,6 +102,12 @@ ai_medical_support/
 │   ├── blog.html
 │   ├── contact.html
 │   └── policies.html
+├── datasets/
+│   ├── symptom_Description.csv
+│   ├── symptom_precaution.csv
+│   └── Training.csv
+├── models/
+│   └── svc.pkl
 ├── main.py
 ├── medicine.csv
 └── requirements.txt

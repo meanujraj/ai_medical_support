@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policies & Legal Documents - AI Medical Support</title>
+    <script>
+        // Apply theme immediately to prevent flash
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.documentElement.classList.add('dark-theme');
+            document.documentElement.style.backgroundColor = '#121212';
+            document.write('<style>html{background-color:#121212;}body{background-color:#121212;color:#e0e0e0}</style>');
+        } else {
+            document.documentElement.setAttribute('data-bs-theme', 'light');
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toggle.css') }}">
+    <style>
+        html.dark-theme {
+            background-color: #121212;
+        }
+        html.dark-theme body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding-top: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        .section-title {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .nav-link {
+            color: #4CAF50;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-link.active {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
+        body.dark-mode .nav-link {
+            color: #4CAF50;
+        }
+        body.dark-mode .nav-link.active {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
+        body.dark-mode .nav-link:hover:not(.active) {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+        .policy-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        body.dark-mode .policy-section {
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .policy-nav {
+            position: sticky;
+            top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        body.dark-mode .policy-nav {
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .policy-nav-link {
+            display: block;
+            padding: 8px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            color: #4CAF50;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .policy-nav-link:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #388E3C;
+        }
+        body.dark-mode .policy-nav-link:hover {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        .policy-nav-link.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .policy-nav {
+                position: relative;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-container" id="themeToggle" aria-label="Toggle dark/light mode">
+        <div class="toggle-circle">
+            <i class="fas fa-lightbulb"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="text-center mb-4 section-title">Policies & Legal Documents</h1>
+        
+        <nav class="mb-4">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search_medicine">Medicine Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/policies">Policies</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="policy-nav">
+                    <h5 class="mb-3">Quick Navigation</h5>
+                    <a href="#privacy-policy" class="policy-nav-link">Privacy Policy</a>
+                    <a href="#terms-of-service" class="policy-nav-link">Terms of Service</a>
+                    <a href="#cookie-policy" class="policy-nav-link">Cookie Policy</a>
+                    <a href="#data-protection" class="policy-nav-link">Data Protection</a>
+                    <a href="#disclaimer" class="policy-nav-link">Disclaimer</a>
+                    <a href="#faq" class="policy-nav-link">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                <div id="privacy-policy" class="policy-section">
+                    <h2 class="section-title">Privacy Policy</h2>
+                    
+                    <h4>1. Introduction</h4>
+                    <p>AI Medical Support is dedicated to safeguarding user privacy. This Privacy Policy details the collection, use, and protection of your information while using our platform.</p>
+                    
+                    <h4>2. Information We Collect</h4>
+                    <p><strong>Personal Data:</strong> Name, email address, and voluntarily provided details.</p>
+                    <p><strong>Usage Data:</strong> IP address, browser type, and interaction data.</p>
+                    <p><strong>Health Data:</strong> User-submitted symptoms for analysis (not stored permanently).</p>
+                    
+                    <h4>3. How We Use Your Data</h4>
+                    <ul>
+                        <li>To generate disease predictions using AI.</li>
+                        <li>To improve system performance and user experience.</li>
+                        <li>To respond to support inquiries and platform improvements.</li>
+                    </ul>
+                    
+                    <h4>4. Data Security</h4>
+                    <p>We employ encryption, secure servers, and strict security protocols to protect user data from unauthorized access.</p>
+                    
+                    <h4>5. Third-Party Sharing</h4>
+                    <p>Personal data is not sold or shared with third parties, except where legally required.</p>
+                    
+                    <h4>6. User Rights</h4>
+                    <p>Users may request access, modification, or deletion of their personal data by contacting our support team.</p>
+                </div>
+                
+                <div id="terms-of-service" class="policy-section">
+                    <h2 class="section-title">Terms of Service</h2>
+                    
+                    <h4>1. Acceptance of Terms</h4>
+                    <p>By using AI Medical Support, you acknowledge and agree to these Terms of Service.</p>
+                    
+                    <h4>2. Services Provided</h4>
+                    <ul>
+                        <li>AI-based disease predictions based on symptoms.</li>
+                        <li>Access to a comprehensive medicine database with usage details.</li>
+                        <li>Health recommendations including precautions, diet, and exercise.</li>
+                    </ul>
+                    
+                    <h4>3. Limitations</h4>
+                    <p>AI-generated outputs are informational and do not replace professional medical advice.</p>
+                    <p>Users should consult a healthcare provider for medical decisions.</p>
+                    
+                    <h4>4. Prohibited Use</h4>
+                    <p>Users must not engage in fraudulent activities, misuse the platform, or disrupt system functionality.</p>
+                    
+                    <h4>5. Liability Limitation</h4>
+                    <p>AI Medical Support is not responsible for decisions made based on the platform's outputs.</p>
+                </div>
+                
+                <div id="cookie-policy" class="policy-section">
+                    <h2 class="section-title">Cookie Policy</h2>
+                    
+                    <h4>1. What Are Cookies?</h4>
+                    <p>Cookies are small files stored on your device that help enhance the user experience.</p>
+                    
+                    <h4>2. Types of Cookies We Use</h4>
+                    <p><strong>Essential Cookies:</strong> Required for core functionalities.</p>
+                    <p><strong>Analytics Cookies:</strong> Used to analyze user interactions and improve performance.</p>
+                    
+                    <h4>3. Managing Cookies</h4>
+                    <p>Users may manage or disable cookies through browser settings.</p>
+                </div>
+                
+                <div id="data-protection" class="policy-section">
+                    <h2 class="section-title">Data Protection Policy</h2>
+                    
+                    <h4>1. Commitment to Data Security</h4>
+                    <p>We ensure confidentiality and integrity of user data through advanced security measures.</p>
+                    
+                    <h4>2. Data Storage and Retention</h4>
+                    <p>Health data is processed but not stored permanently.</p>
+                    <p>Personal data is retained only as long as necessary.</p>
+                    
+                    <h4>3. User Rights</h4>
+                    <p>Users can request modifications or deletions of personal data anytime.</p>
+                </div>
+                
+                <div id="disclaimer" class="policy-section">
+                    <h2 class="section-title">Disclaimer</h2>
+                    
+                    <h4>1. No Medical Advice</h4>
+                    <p>The information on AI Medical Support is for reference only and does not constitute medical consultation or diagnosis.</p>
+                    
+                    <h4>2. AI-Based Predictions</h4>
+                    <p>Disease predictions are generated using AI models and should always be validated by a qualified medical professional.</p>
+                    
+                    <h4>3. Limitation of Liability</h4>
+                    <p>AI Medical Support is not responsible for any actions taken based on the platform's outputs.</p>
+                </div>
+                
+                <div id="faq" class="policy-section">
+                    <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
+                    
+                    <h4>1. Is AI Medical Support a replacement for a doctor?</h4>
+                    <p>No, our platform provides AI-driven insights, but medical advice should always be sought from a healthcare professional.</p>
+                    
+                    <h4>2. How accurate are the disease predictions?</h4>
+                    <p>Our AI model is trained on medical datasets, but predictions should be used as reference only, not definitive diagnoses.</p>
+                    
+                    <h4>3. Is my personal data secure?</h4>
+                    <p>Yes, we employ encryption and strict security protocols to ensure data protection.</p>
+                    
+                    <h4>4. Does AI Medical Support store my health data?</h4>
+                    <p>No, symptoms entered for analysis are not permanently stored.</p>
+                    
+                    <h4>5. Can I request my data to be deleted?</h4>
+                    <p>Yes, users can contact support to request data deletion.</p>
+                    
+                    <h4>6. How frequently is the medicine database updated?</h4>
+                    <p>The medicine database is updated regularly to ensure accurate information.</p>
+                    
+                    <h4>7. Is AI Medical Support free to use?</h4>
+                    <p>Currently, our platform is free to access, but premium features may be introduced in the future.</p>
+                    
+                    <h4>8. Can AI Medical Support recommend treatments?</h4>
+                    <p>The platform provides general guidance but does not prescribe treatments. Always consult a doctor.</p>
+                    
+                    <h4>9. Does AI Medical Support work for all diseases?</h4>
+                    <p>The AI is trained on a wide range of conditions, but it may not cover every disease.</p>
+                    
+                    <h4>10. Who can I contact for support?</h4>
+                    <p>For any issues or inquiries, contact us at <a href="mailto:anujraj1875@gmail.com">anujraj1875@gmail.com</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container-fluid px-4">
+            <div class="row g-4">
+                <div class="col-md-4 col-sm-6">
+                    <h5 class="mb-3">AI Medical Support</h5>
+                    <p class="small">Your trusted platform for disease prediction and medicine recommendations based on symptoms.</p>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5 class="mb-3">Policies & FAQ</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="/policies#privacy-policy" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Privacy Policy</a></li>
+                        <li class="mb-2"><a href="/policies#terms-of-service" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Terms of Service</a></li>
+                        <li class="mb-2"><a href="/policies#cookie-policy" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Cookie Policy</a></li>
+                        <li class="mb-2"><a href="/policies#data-protection" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Data Protection</a></li>
+                        <li class="mb-2"><a href="/policies#disclaimer" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Disclaimer</a></li>
+                        <li class="mb-2"><a href="/policies#faq" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5 class="mb-3">Contact Information</h5>
+                    <ul class="list-unstyled small mb-4">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Bhopal, Madhya Pradesh, India</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i><a href="tel:+919973390603" class="text-white text-decoration-none">+91 9973390603</a></li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:anujraj1875@gmail.com" class="text-white text-decoration-none">anujraj1875@gmail.com</a></li>
+                    </ul>
+                    <h5 class="mb-3">Connect with Me</h5>
+                    <div class="social-icons mb-3">
+                        <a href="https://github.com/meanujraj" class="text-white me-3" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/meanujraj" class="text-white me-3" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/meanujraj" class="text-white me-3" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" fill="currentColor">
+                                <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+                            </svg>
+                        </a>
+                        <a href="https://instagram.com/meanujraj" class="text-white" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center small">
+                <p class="mb-0">&copy; 2024 AI Medical Support by Anuj Raj. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="{{ url_for('static', filename='js/toggle.js') }}"></script>
+    <script>
+        // Highlight active policy section based on scroll position
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.policy-section');
+            const navLinks = document.querySelectorAll('.policy-nav-link');
+            
+            function highlightNavLink() {
+                let scrollPosition = window.scrollY;
+                
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        navLinks[index].classList.add('active');
+                    }
+                });
+            }
+            
+            // Smooth scroll to section when clicking nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Initial highlight
+            highlightNavLink();
+            
+            // Update highlight on scroll
+            window.addEventListener('scroll', highlightNavLink);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,10 @@
+This directory is for storing image files used in the AI Medical Support application.
+
+Recommended image types:
+- Logo images (PNG with transparency)
+- Hero background images
+- Feature icons
+- Team member photos
+- Blog post thumbnails
+
+Please ensure all images are optimized for web use to maintain fast loading times. 

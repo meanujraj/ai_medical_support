@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Toggle</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            transition: background 0.5s ease, color 0.5s ease;
+            background: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: #ffd700;
+            width: 60px;
+            height: 30px;
+            border-radius: 30px;
+            position: relative;
+            padding: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-circle {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: left 0.3s ease, background 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toggle-container.night {
+            background: #4a90e2;
+        }
+
+        .toggle-container.night .toggle-circle {
+            left: 30px;
+        }
+
+        .fa {
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-container .fa-sun {
+            color: #ffd700;
+        }
+
+        .toggle-container.night .fa-moon {
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toggle-container" onclick="toggleMode()">
+        <div class="toggle-circle">
+            <i class="fa fa-sun"></i>
+        </div>
+    </div>
+
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const toggle = document.querySelector(".toggle-container");
+            const icon = document.querySelector(".toggle-circle i");
+
+            toggle.classList.toggle("night");
+            body.classList.toggle("dark-mode");
+
+            if (toggle.classList.contains("night")) {
+                icon.classList.replace("fa-sun", "fa-moon");
+                document.body.style.background = "#333";
+                document.body.style.color = "#fff";
+            } else {
+                icon.classList.replace("fa-moon", "fa-sun");
+                document.body.style.background = "#f5f5f5";
+                document.body.style.color = "#333";
+            }
+        }
+    </script>
+
+</body>
+</html> 

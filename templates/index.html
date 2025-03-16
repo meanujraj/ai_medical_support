@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Medical Support</title>
+    <script>
+        // Apply theme immediately to prevent flash
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.documentElement.classList.add('dark-theme');
+            document.documentElement.style.backgroundColor = '#121212';
+            document.write('<style>html{background-color:#121212;}body{background-color:#121212;color:#e0e0e0}</style>');
+        } else {
+            document.documentElement.setAttribute('data-bs-theme', 'light');
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toggle.css') }}">
+    <style>
+        html.dark-theme {
+            background-color: #121212;
+        }
+        html.dark-theme body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding-top: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        .search-box {
+            margin-bottom: 30px;
+        }
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode .result-section {
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .medicine-card {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, background-color 0.3s ease;
+        }
+        body.dark-mode .medicine-card {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-mode .card-body {
+            background-color: #2d2d2d;
+        }
+        .medicine-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px 8px 0 0 !important;
+        }
+        .price-tag {
+            background-color: #ff9800;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+        }
+        .manufacturer {
+            color: #666;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+        body.dark-mode .manufacturer {
+            color: #aaa;
+        }
+        .nav-link {
+            color: #4CAF50;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-link.active {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
+        body.dark-mode .nav-link {
+            color: #4CAF50;
+        }
+        body.dark-mode .nav-link.active {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
+        body.dark-mode .nav-link:hover:not(.active) {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .btn-primary:hover {
+            background-color: #388E3C;
+            border-color: #388E3C;
+        }
+        .section-title {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .precaution-item, .diet-item, .workout-item {
+            background-color: #e9f7ef;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode .precaution-item, 
+        body.dark-mode .diet-item, 
+        body.dark-mode .workout-item {
+            background-color: #2a3b2e;
+        }
+        body.dark-mode .jumbotron {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+        }
+        /* Theme toggle styles moved to toggle.css */
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .medicine-card {
+                margin-bottom: 15px;
+            }
+        }
+        .suggestion-box {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+            z-index: 1000;
+            display: none;
+            margin-top: -1px;
+        }
+        
+        body.dark-mode .suggestion-box {
+            background-color: #2d2d2d;
+            border-color: #444;
+        }
+        
+        .suggestion-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        body.dark-mode .suggestion-item:hover {
+            background-color: #3d3d3d;
+        }
+        
+        .selected-suggestion {
+            background-color: #e9f7ef;
+        }
+        
+        body.dark-mode .selected-suggestion {
+            background-color: #2a3b2e;
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-container" id="themeToggle" aria-label="Toggle dark/light mode">
+        <div class="toggle-circle">
+            <i class="fas fa-lightbulb"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="text-center mb-4 section-title">AI Medical Support</h1>
+        
+        <nav class="mb-4">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search_medicine">Medicine Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="search-box">
+            <form method="POST" action="/predict">
+                <div class="position-relative">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="symptomsInput" placeholder="Enter symptoms separated by commas (e.g., fever, headache, cough)" name="symptoms" autocomplete="off">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Predict Disease</button>
+                        </div>
+                    </div>
+                    <div id="suggestionBox" class="suggestion-box"></div>
+                </div>
+                {% if message %}
+                <div class="alert alert-warning mt-3">{{ message }}</div>
+                {% endif %}
+            </form>
+        </div>
+        
+        {% if predicted_disease %}
+        <div class="result-section">
+            <h2 class="section-title">Predicted Disease: {{ predicted_disease }}</h2>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="mb-0">Description</h3>
+                </div>
+                <div class="card-body">
+                    <p>{{ dis_des }}</p>
+                </div>
+            </div>
+            
+            <h3 class="section-title">Precautions</h3>
+            <div class="row mb-4">
+                {% for precaution in my_precautions %}
+                <div class="col-md-6">
+                    <div class="precaution-item">
+                        <p class="mb-0">{{ precaution }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h3 class="section-title">Recommended Medicines</h3>
+            <div class="row">
+                {% for medicine in medications %}
+                <div class="col-md-6">
+                    <div class="card medicine-card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">{{ medicine.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="price-tag mb-2">₹{{ medicine.price }}</p>
+                            <p class="manufacturer mb-3">Manufacturer: {{ medicine.manufacturer }}</p>
+                            
+                            <h6>Type:</h6>
+                            <p>{{ medicine.type }}</p>
+                            
+                            <h6>Uses:</h6>
+                            <p>{{ medicine.use }}</p>
+                            
+                            {% if medicine.side_effect %}
+                            <h6>Side Effects:</h6>
+                            <p>{{ medicine.side_effect }}</p>
+                            {% endif %}
+                            
+                            {% if medicine.substitute %}
+                            <h6>Substitutes:</h6>
+                            <p>{{ medicine.substitute }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h3 class="section-title">Recommended Diet</h3>
+            <div class="row mb-4">
+                {% for diet in my_diet %}
+                <div class="col-md-6">
+                    <div class="diet-item">
+                        <p class="mb-0">{{ diet }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h3 class="section-title">Recommended Workout</h3>
+            <div class="row">
+                {% for work in workout %}
+                <div class="col-md-6">
+                    <div class="workout-item">
+                        <p class="mb-0">{{ work }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="jumbotron">
+            <h2>Welcome to the AI Medical Support</h2>
+            <p class="lead">Enter your symptoms to get personalized disease prediction and medicine recommendations.</p>
+            <p>Our system uses machine learning to analyze your symptoms and provide accurate predictions.</p>
+            <p>We now feature over 256,000 Indian medicines with detailed information!</p>
+            <hr class="my-4">
+            <p>You can also directly search for medicines using our new Medicine Search feature.</p>
+            <a class="btn btn-primary btn-lg" href="/search_medicine" role="button">Search Medicines</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container-fluid px-4">
+            <div class="row g-4">
+                <div class="col-md-4 col-sm-6">
+                    <h5 class="mb-3">AI Medical Support</h5>
+                    <p class="small">Your trusted platform for disease prediction and medicine recommendations based on symptoms.</p>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5 class="mb-3">Policies & FAQ</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="/policies#privacy-policy" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Privacy Policy</a></li>
+                        <li class="mb-2"><a href="/policies#terms-of-service" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Terms of Service</a></li>
+                        <li class="mb-2"><a href="/policies#cookie-policy" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Cookie Policy</a></li>
+                        <li class="mb-2"><a href="/policies#data-protection" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Data Protection</a></li>
+                        <li class="mb-2"><a href="/policies#disclaimer" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>Disclaimer</a></li>
+                        <li class="mb-2"><a href="/policies#faq" class="text-white text-decoration-none"><i class="fas fa-angle-right me-2"></i>FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5 class="mb-3">Contact Information</h5>
+                    <ul class="list-unstyled small mb-4">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Bhopal, Madhya Pradesh, India</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i><a href="tel:+919973390603" class="text-white text-decoration-none">+91 9973390603</a></li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:anujraj1875@gmail.com" class="text-white text-decoration-none">anujraj1875@gmail.com</a></li>
+                    </ul>
+                    <h5 class="mb-3">Connect with Me</h5>
+                    <div class="social-icons mb-3">
+                        <a href="https://github.com/meanujraj" class="text-white me-3" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/meanujraj" class="text-white me-3" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/meanujraj" class="text-white me-3" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" fill="currentColor">
+                                <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+                            </svg>
+                        </a>
+                        <a href="https://instagram.com/meanujraj" class="text-white" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center small">
+                <p class="mb-0">&copy; 2024 AI Medical Support by Anuj Raj. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/toggle.js') }}"></script>
+    <script>
+        // Symptom suggestion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const symptomsInput = document.getElementById('symptomsInput');
+            const suggestionBox = document.getElementById('suggestionBox');
+            
+            // List of all valid symptoms (combined from symptoms_dict and symptom_mapping)
+            const allSymptoms = [
+                'itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 
+                'chills', 'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 
+                'vomiting', 'burning_micturition', 'spotting_ urination', 'fatigue', 'weight_gain', 
+                'anxiety', 'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 
+                'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough', 'high_fever', 
+                'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache', 
+                'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 
+                'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 
+                'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 
+                'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 
+                'throat_irritation', 'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 
+                'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 'pain_during_bowel_movements', 
+                'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain', 'dizziness', 
+                'cramps', 'bruising', 'obesity', 'swollen_legs', 'swollen_blood_vessels', 
+                'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails', 'swollen_extremeties', 
+                'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech', 
+                'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints', 
+                'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness', 
+                'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of urine', 
+                'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)', 
+                'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 
+                'belly_pain', 'abnormal_menstruation', 'dischromic _patches', 'watering_from_eyes', 
+                'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 
+                'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion', 
+                'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen', 
+                'history_of_alcohol_consumption', 'blood_in_sputum', 'prominent_veins_on_calf', 
+                'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 
+                'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 
+                'blister', 'red_sore_around_nose', 'yellow_crust_ooze',
+                // Common terms that users might type
+                'fever', 'high fever', 'stomach ache', 'belly ache', 'tummy pain', 'pain in stomach',
+                'pain in abdomen', 'head ache', 'throat pain', 'eye pain', 'body pain', 'joint aches',
+                'dizzy', 'feeling dizzy', 'throwing up', 'feeling sick', 'tired', 'exhausted',
+                'no appetite', 'not hungry', 'runny nose', 'stuffy nose', 'blocked nose', 'sore throat',
+                'rash', 'skin eruptions', 'itchy', 'itchy skin', 'cold', 'flu', 'chest pain',
+                'heart pain', 'difficulty breathing', 'short of breath', 'can\'t breathe',
+                'trouble breathing', 'excessive sweating', 'night sweats', 'thirsty', 'very thirsty',
+                'yellow eyes', 'yellow skin', 'dark pee', 'yellow pee', 'constipated', 'diarrhea',
+                'loose stool', 'loose motion', 'watery stool', 'neck ache', 'stiff neck', 'back ache',
+                'knee ache', 'hip pain', 'weak', 'weakness', 'muscle weakness', 'blurry vision',
+                'can\'t see clearly', 'vision problems', 'trouble seeing', 'fast heartbeat',
+                'heart racing', 'palpitation', 'heart palpitations', 'swollen legs', 'swollen feet',
+                'swollen hands', 'swollen lymph nodes', 'enlarged lymph nodes', 'swollen stomach',
+                'bloated', 'bloated stomach', 'swollen joints', 'joint swelling', 'puffy eyes',
+                'puffy face', 'face swelling', 'always hungry', 'very hungry', 'increased hunger',
+                'always thirsty', 'peeing a lot', 'frequent urination', 'burning when peeing',
+                'painful urination', 'blood in urine', 'spotting in urine', 'smelly urine',
+                'bad smell urine', 'bladder pain', 'need to pee', 'always need to pee', 'coughing',
+                'dry cough', 'wet cough', 'phlegm in cough', 'mucus in cough', 'blood in cough',
+                'rusty phlegm', 'sneezing', 'chilly', 'feeling cold', 'shaking', 'trembling',
+                'acid reflux', 'heartburn', 'stomach upset', 'ulcers in mouth', 'mouth ulcers',
+                'patches in throat', 'white patches in throat', 'weight gain', 'gaining weight',
+                'weight loss', 'losing weight', 'anxious', 'worried', 'panic', 'mood changes',
+                'irritable', 'easily annoyed', 'depressed', 'sad', 'hopeless', 'restless',
+                'can\'t sit still', 'lazy', 'no energy', 'lethargic', 'no concentration',
+                'can\'t focus', 'distracted', 'cold hands', 'cold feet', 'sunken eyes', 'red eyes',
+                'watery eyes', 'eyes watering', 'sinus pain', 'sinus pressure', 'muscle loss',
+                'muscle atrophy', 'sugar level', 'blood sugar', 'diabetes', 'balance problems',
+                'unsteady', 'spinning', 'vertigo', 'one-sided weakness', 'can\'t smell', 'no smell',
+                'gas', 'flatulence', 'passing gas', 'internal itch', 'itching inside', 'red spots',
+                'rash spots', 'abnormal periods', 'irregular periods', 'heavy periods', 'skin patches',
+                'discolored skin', 'blackhead', 'pimples', 'acne', 'nail problems', 'brittle nails',
+                'nail dents', 'sore nose', 'nose sore', 'yellow crust', 'oozing'
+            ];
+            
+            // Function to display suggestions based on input
+            function showSuggestions(input) {
+                // Clear previous suggestions
+                suggestionBox.innerHTML = '';
+                
+                if (!input) {
+                    suggestionBox.style.display = 'none';
+                    return;
+                }
+                
+                // Get current input value and split by commas to get the last term
+                const terms = input.split(',');
+                const currentTerm = terms[terms.length - 1].trim().toLowerCase();
+                
+                if (currentTerm.length < 2) {
+                    suggestionBox.style.display = 'none';
+                    return;
+                }
+                
+                // Filter symptoms that match the current term
+                const matchingSymptoms = allSymptoms.filter(symptom => 
+                    symptom.toLowerCase().includes(currentTerm)
+                );
+                
+                // Display matching suggestions
+                if (matchingSymptoms.length > 0) {
+                    matchingSymptoms.slice(0, 10).forEach(symptom => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.className = 'suggestion-item';
+                        suggestionItem.textContent = symptom;
+                        suggestionItem.addEventListener('click', function() {
+                            // Replace the last term with the selected suggestion
+                            terms[terms.length - 1] = symptom;
+                            symptomsInput.value = terms.join(', ') + ', ';
+                            suggestionBox.style.display = 'none';
+                            symptomsInput.focus();
+                        });
+                        suggestionBox.appendChild(suggestionItem);
+                    });
+                    suggestionBox.style.display = 'block';
+                } else {
+                    suggestionBox.style.display = 'none';
+                }
+            }
+            
+            // Event listeners for the symptoms input
+            symptomsInput.addEventListener('input', function() {
+                showSuggestions(this.value);
+            });
+            
+            symptomsInput.addEventListener('keydown', function(e) {
+                if (suggestionBox.style.display === 'block') {
+                    const suggestions = suggestionBox.querySelectorAll('.suggestion-item');
+                    let selectedIndex = Array.from(suggestions).findIndex(item => item.classList.contains('selected-suggestion'));
+                    
+                    // Handle arrow keys
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (selectedIndex < suggestions.length - 1) {
+                            if (selectedIndex >= 0) suggestions[selectedIndex].classList.remove('selected-suggestion');
+                            suggestions[selectedIndex + 1].classList.add('selected-suggestion');
+                            suggestions[selectedIndex + 1].scrollIntoView({ block: 'nearest' });
+                        }
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (selectedIndex > 0) {
+                            suggestions[selectedIndex].classList.remove('selected-suggestion');
+                            suggestions[selectedIndex - 1].classList.add('selected-suggestion');
+                            suggestions[selectedIndex - 1].scrollIntoView({ block: 'nearest' });
+                        }
+                    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+                        e.preventDefault();
+                        suggestions[selectedIndex].click();
+                    } else if (e.key === 'Escape') {
+                        suggestionBox.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Close suggestion box when clicking outside
+            document.addEventListener('click', function(e) {
+                if (e.target !== symptomsInput && e.target !== suggestionBox) {
+                    suggestionBox.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

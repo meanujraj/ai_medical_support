@@ -1,0 +1,191 @@
+/* Toggle Switch Styles */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: #ffd700;
+    width: 60px;
+    height: 30px;
+    border-radius: 30px;
+    position: relative;
+    padding: 5px;
+    transition: background 0.3s ease;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toggle-circle {
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left 0.3s ease, background 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-container.night {
+    background: #4a90e2;
+}
+
+.toggle-container.night .toggle-circle {
+    left: 30px;
+}
+
+.toggle-container .fa-lightbulb {
+    color: #ffd700;
+}
+
+.toggle-container.night .fa-moon,
+.toggle-container.night .fa-lightbulb-off {
+    color: #4a90e2;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .container {
+    background-color: #1e1e1e !important;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .result-section {
+    background-color: #2d2d2d !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .medicine-card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .card-body {
+    background-color: #2d2d2d !important;
+}
+
+body.dark-mode .manufacturer {
+    color: #aaa !important;
+}
+
+body.dark-mode .jumbotron {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .suggestion-box {
+    background-color: #2d2d2d !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode .suggestion-item:hover {
+    background-color: #3d3d3d !important;
+}
+
+body.dark-mode .selected-suggestion {
+    background-color: #2a3b2e !important;
+}
+
+body.dark-mode .precaution-item, 
+body.dark-mode .diet-item, 
+body.dark-mode .workout-item {
+    background-color: #2a3b2e !important;
+}
+
+body.dark-mode .nav-link {
+    color: #4CAF50 !important;
+}
+
+body.dark-mode .section-title {
+    color: #4CAF50 !important;
+    border-bottom: 2px solid #4CAF50 !important;
+}
+
+/* Footer dark mode styles */
+body.dark-mode footer {
+    background-color: #121212 !important;
+}
+
+body.dark-mode footer.bg-dark {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode footer hr {
+    border-color: #333 !important;
+}
+
+body.dark-mode footer .text-white {
+    color: #e0e0e0 !important;
+}
+
+/* Enhanced footer dark mode styles */
+body.dark-mode .bg-dark {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode footer svg {
+    fill: #e0e0e0 !important;
+}
+
+body.dark-mode footer a:hover {
+    opacity: 0.8;
+}
+
+body.dark-mode footer a:hover svg {
+    fill: #ffffff !important;
+}
+
+/* Standardized footer styles */
+footer h5 {
+    font-size: 1.1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+footer .small, 
+footer .list-unstyled.small,
+footer .text-center.small {
+    font-size: 0.875rem !important;
+}
+
+footer .social-icons {
+    font-size: 1.25rem !important;
+}
+
+footer .social-icons a {
+    transition: opacity 0.2s ease;
+}
+
+footer .social-icons a:hover {
+    opacity: 0.8;
+}
+
+footer svg {
+    height: 1em;
+    width: auto;
+    vertical-align: middle;
+}
+
+/* Card header dark mode styles */
+body.dark-mode .card-header {
+    background-color: #388E3C !important;
+}
+
+/* Suggestion box responsive alignment */
+.suggestion-box {
+    width: 100% !important;
+    max-width: calc(100% - 140px) !important;
+}
+
+@media (max-width: 768px) {
+    .suggestion-box {
+        max-width: calc(100% - 120px) !important;
+    }
+}
